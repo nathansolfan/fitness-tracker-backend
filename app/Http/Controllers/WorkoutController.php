@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Workout;
 use Illuminate\Http\Request;
 
 class WorkoutController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    // Display a listing of the resource.
+    public function index(Request $request)
     {
-        //
+        $workouts = Workout::where('user_id', $request->user()->id)->get();
+        return response()->json($workouts);
     }
 
     /**

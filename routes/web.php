@@ -9,7 +9,7 @@ Route::get('/', function () {
 });
 
 Route::get('/register', [AuthController::class, 'register']);
-Route::ge('/login', [AuthController::class, 'login']);
+Route::get('/login', [AuthController::class, 'login']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
