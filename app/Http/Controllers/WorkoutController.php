@@ -19,15 +19,37 @@ class WorkoutController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'exercise' => 'required|string|max:255',
+            'sets' => 'required|integer|min:1',
+            'reps' => 'required|integer|min:1',
+            'weight' => 'nullable|numeric|min:0',
+            'category' => 'required|in:strength,cardio',
+        ]);
+
+        $workout = Workout::create([
+            'user_id' => $request->user()->id,
+            'exercise' => $request->exercise,
+            'sets' => $request->sets,
+            'reps' => $request->reps,
+            'weight' => $request->weight,
+            'category' => $request->category,
+        ]);
+
+        return response()->json($workout, 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Workout $workout)
     {
-        //
+        // Ensure the workout belongs to the authenticated user
+        if ($workout->user_id !== request()->user()->id) {
+            return response()->json(['error' => 'Unauthorized'], 403);
+        }
+
+        return response()->json($workout);
     }
 
     /**
